@@ -18,7 +18,7 @@ jobs:
     env:
       GH_ACCESS_TOKEN: ${{ secrets.BOT_TOKEN }}
       GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
-      GH_REPO: neurolibre/neurolibre-reviews
+      GH_REPO: neurolibre/neurolibre-reviews-testing
     steps:
       - name: Compile Paper
         id: generate-files
@@ -32,8 +32,8 @@ jobs:
         id: upload-pdf
         uses: neurolibre/upload-files-action@main
         with:
-          papers_repo: neurolibre/preprints
-          branch_prefix: neurolibre
+          papers_repo: neurolibre/neurolibre-preprints-testing
+          branch_prefix: test_journal
           issue_id: ${{ github.event.inputs.issue_id }}
           pdf_path: ${{ steps.generate-files.outputs.pdf_path}}
       - name: Reply message

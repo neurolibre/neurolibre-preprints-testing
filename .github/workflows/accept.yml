@@ -22,7 +22,7 @@ jobs:
     env:
       GH_ACCESS_TOKEN: ${{ secrets.BOT_TOKEN }}
       GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
-      GH_REPO: neurolibre/neurolibre-reviews
+      GH_REPO: neurolibre/neurolibre-reviews-testing
       ISSUE_ID: ${{ github.event.inputs.issue_id }}
       DEFAULT_ERROR: ":warning: Couldn't acccept/publish paper. [An error happened](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}?check_suite_focus=true)."
     steps:
@@ -39,8 +39,8 @@ jobs:
         id: upload-files
         uses: neurolibre/upload-files-action@main
         with:
-          papers_repo: neurolibre/preprints
-          branch_prefix: neurolibre
+          papers_repo: neurolibre/neurolibre-preprints-testing
+          branch_prefix: test_journal
           issue_id: ${{ github.event.inputs.issue_id }}
           pdf_path: ${{ steps.generate-files.outputs.pdf_path}}
           jats_path: ${{ steps.generate-files.outputs.jats_path}}
@@ -56,9 +56,9 @@ jobs:
         id: pull-request
         uses: neurolibre/deposit-pull-request-action@main
         with:
-          papers_repo: neurolibre/preprints
+          papers_repo: neurolibre/neurolibre-preprints-testing
           papers_repo_main_branch: master
-          branch_prefix: neurolibre
+          branch_prefix: test_journal
           issue_id: ${{ github.event.inputs.issue_id }}
           bot_token: ${{ secrets.BOT_TOKEN }}
           mode: deposit
@@ -72,7 +72,7 @@ jobs:
         id: neurolibre-deposit
         uses: neurolibre/deposit-with-neurolibre-action@main
         with:
-          journal_alias: neurolibre
+          journal_alias: test_journal
           journal_secret: ${{ secrets.JOURNAL_SECRET }}
           issue_id: ${{ github.event.inputs.issue_id }}
           paper_path: ${{ steps.generate-files.outputs.paper_file_path}}
@@ -81,7 +81,7 @@ jobs:
         with:
           citation_file_path: ${{ steps.generate-files.outputs.citation_file_path}}
           issue_id: ${{ github.event.inputs.issue_id }}
-          reviews_repo: openjournals/joss-reviews
+          reviews_repo: neurolibre/neurolibre-reviews-testing
           gh_token: ${{ secrets.BOT_TOKEN }}
       - name: Reply message
         if: ${{ success() }}
